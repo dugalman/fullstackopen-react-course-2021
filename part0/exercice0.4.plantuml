@@ -1,0 +1,17 @@
+title Exercice 0.4
+
+User -> browser: Enter any text into text field
+User -> browser: Press the "submit" button
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note over server:
+Add the sent text to the note listtext new note
+end note
+server
+
+server-->browser: Redirect to notes page
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+
+browser-->User: See the text in the list note
+
