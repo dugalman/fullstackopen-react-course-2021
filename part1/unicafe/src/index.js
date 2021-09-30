@@ -8,8 +8,12 @@ const Button = props => {
 const Statistics = props => {
   const { good, neutral, bad } = props
 
-  const positive = (good / (good + neutral + bad)) * 100
   const all = good + neutral + bad
+  if (all === 0) {
+    return 'No feedback given'
+  }
+
+  const positive = (good / (good + neutral + bad)) * 100
 
   // good => 1 , bad => -1 , neutral 0
   const averageWeighted = (good * 1 + bad * -1 + neutral * 0) / all
