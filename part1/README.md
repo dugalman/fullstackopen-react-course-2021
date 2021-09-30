@@ -77,3 +77,25 @@ const App = () => {
   )
 }
 ```
+
+## 1.5: información del curso paso 5
+Llevemos los cambios un paso más allá. Cambie el curso y sus partes en un solo objeto JavaScript. Arregle todo lo que se rompa.
+
+```js
+const App = () => {
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {name: 'Fundamentals of React',exercises: 10},
+      {name: 'Using props to pass data',exercises: 7},
+      {name: 'State of a component',exercises: 14}
+    ]
+  }
+
+  return (
+    <div>
+      ...
+    </div>
+  )
+}
+```
