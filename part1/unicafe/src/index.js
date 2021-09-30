@@ -5,6 +5,14 @@ const Button = props => {
   return <button onClick={props.handler}>{props.name}</button>
 }
 
+const Statistic = props => {
+  return (
+    <p>
+      {props.text}: {props.value} {props.afterText}
+    </p>
+  )
+}
+
 const Statistics = props => {
   const { good, neutral, bad } = props
 
@@ -20,12 +28,11 @@ const Statistics = props => {
 
   return (
     <>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All: {all}</p>
-      <p>Average: {averageWeighted}</p>
-      <p>Positive: {positive} %</p>
+      <Statistic text='good' value={good} />
+      <Statistic text='Neutral' value={neutral} />
+      <Statistic text='Bad' value={bad} />
+      <Statistic text='Average' value={averageWeighted} />
+      <Statistic text='Positive' value={positive} afterText="%" />
     </>
   )
 }
