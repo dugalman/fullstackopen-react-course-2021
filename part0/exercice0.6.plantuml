@@ -22,19 +22,8 @@ end note
 
 User -> browser: Enter any text into text field
 User -> browser: Press the "submit" button
-
-note over browser:
- var note = {
-      content: e.target.elements[0].value,
-      date: new Date()
-    }
-    notes.push(note)
-    sendToServer(note)
-end note
 browser->server: HTTP AJAX POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
-
-server-->browser:{"message":"note created"}
-
 note over server:
 Add sent text to note list
 end note
+server
