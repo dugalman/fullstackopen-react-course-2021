@@ -7,9 +7,12 @@ const Button = props => {
 
 const Statistic = props => {
   return (
-    <p>
-      {props.text}: {props.value} {props.afterText}
-    </p>
+    <tr>
+      <td>{props.text}</td>
+      <td>
+        {props.value} {props.afterText}
+      </td>
+    </tr>
   )
 }
 
@@ -27,13 +30,15 @@ const Statistics = props => {
   const averageWeighted = (good * 1 + bad * -1 + neutral * 0) / all
 
   return (
-    <>
-      <Statistic text='good' value={good} />
-      <Statistic text='Neutral' value={neutral} />
-      <Statistic text='Bad' value={bad} />
-      <Statistic text='Average' value={averageWeighted} />
-      <Statistic text='Positive' value={positive} afterText="%" />
-    </>
+    <table>
+      <tbody>
+        <Statistic text='Good' value={good} />
+        <Statistic text='Neutral' value={neutral} />
+        <Statistic text='Bad' value={bad} />
+        <Statistic text='Average' value={averageWeighted} />
+        <Statistic text='Positive' value={positive} afterText='%' />
+      </tbody>
+    </table>
   )
 }
 
