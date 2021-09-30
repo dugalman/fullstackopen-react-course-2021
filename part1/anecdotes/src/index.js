@@ -2,11 +2,16 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 /////////////////////////////////////////////////
+const Vote = props => {
+  return <button onClick={props.trigger}>vote</button>
+}
+
+/////////////////////////////////////////////////
 const Anecdote = props => {
   const { setSelected, anecdotes } = props
 
   const azar = (max, min) => {
-    return Math.floor( Math.random() * (max - min) + min)
+    return Math.floor(Math.random() * (max - min) + min)
   }
 
   return (
@@ -21,13 +26,42 @@ const Anecdote = props => {
 }
 
 /////////////////////////////////////////////////
-const App = props => {
-  const [selected, setSelected] = useState(0)
+const AnecdoteWithMostVotes = ({ points, anecdotes }) => {
+  const indexMostVotes = points.indexOf(Math.max(...points))
 
   return (
     <>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[indexMostVotes]}</div>
+      has {parseInt(points[indexMostVotes])} votes
+    </>
+  )
+}
+
+/////////////////////////////////////////////////
+const App = props => {
+  const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(new Uint8Array(props.anecdotes.length))
+
+  const triggerAddVote = () => {
+    const copy = [...points]
+    copy[selected] += 1
+
+    console.log('triggerAddVote', points, copy)
+
+    setPoints(copy)
+  }
+
+  return (
+    <>
+      <h1>Anecdote of the day</h1>
       <div>{props.anecdotes[selected]}</div>
+      has {parseInt(points[selected])} votes
+      <br />
+      <Vote trigger={triggerAddVote} />
       <Anecdote setSelected={setSelected} anecdotes={anecdotes} />
+      <br />
+      <AnecdoteWithMostVotes points={points} anecdotes={anecdotes} />
     </>
   )
 }
