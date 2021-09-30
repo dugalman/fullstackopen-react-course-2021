@@ -209,3 +209,40 @@ ReactDOM.render(
 Google te dirá cómo generar números aleatorios en JavaScript. Recuerde que puede probar la generación de números aleatorios, por ejemplo, directamente en la consola de su navegador.
 
 Su aplicación finalizada podría verse así
+
+
+## 1.13*: anecdotes, paso 2
+Expande tu aplicación para que puedas votar por la anécdota mostrada.
+
+
+NB almacene los votos de cada anécdota en una matriz u objeto en el estado del componente. Recuerde que la forma correcta de actualizar el estado almacenado en estructuras de datos complejas como objetos y matrices es hacer una copia del estado.
+
+Puede crear una copia de un objeto como este:
+
+```js
+const points = { 0: 1, 1: 3, 2: 4, 3: 2 }
+
+const copy = { ...points }
+// increment the property 2 value by one
+copy[2] += 1
+```
+
+O una copia de una matriz como esta:
+
+```js
+const points = [1, 4, 6, 3]
+
+const copy = [...points]
+// increment the value in position 2 by one
+copy[2] += 1
+```
+
+El uso de una matriz podría ser la opción más sencilla en este caso. Buscar en Google te proporcionará muchos consejos sobre cómo crear una matriz llena de ceros de la longitud deseada, como esto.
+
+
+## 1,14*: anecdotes, paso 3
+Ahora implemente la versión final de la aplicación que muestra la anécdota con el mayor número de votos
+
+Si se empatan varias anécdotas en el primer lugar, es suficiente con solo mostrar uno de ellos.
+
+Este fue el último ejercicio de esta parte del curso y es hora de enviar tu código a GitHub y marcar todos tus ejercicios terminados en el sistema de envío de ejercicios.
