@@ -5,7 +5,9 @@ const Button = props => {
   return <button onClick={props.handler}>{props.name}</button>
 }
 
-const Statistics = ({ good, neutral, bad }) => {
+const Statistics = props => {
+  const { good, neutral, bad } = props
+
   const positive = (good / (good + neutral + bad)) * 100
   const all = good + neutral + bad
 
