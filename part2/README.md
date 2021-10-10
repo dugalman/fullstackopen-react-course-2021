@@ -14,3 +14,61 @@ c. Obteniendo datos del servidor
 d. Alterando datos en el servidor
 e. Agregar estilos a la aplicación React
 
+2.1: Información del curso paso6
+Terminemos el código para renderizar los contenidos del curso de los ejercicios 1.1 - 1.5. Puede comenzar con el código de las respuestas del modelo. Las respuestas modelo para la parte 1 se pueden encontrar yendo al sistema de presentación, haga clic en my submissions en el arriba, y en la fila correspondiente a la parte 1 debajo de la columna solutions haga clic en show. Para ver la solución al ejercicio de información del curso, haga clic en index.js debajo de kurssitiedot ("kurssitiedot" significa "información del curso").
+
+Tenga en cuenta que si copia un proyecto de un lugar a otro, es posible que deba eliminar el directorio nodemodules e instalar las dependencias nuevamente con el comando _npm install antes de que pueda iniciar la aplicación. Por lo general, no se recomienda que copie todo el contenido de un proyecto y/o agregue el directorio node_modules al sistema de control de versiones.
+
+Cambiemos el componente App así:
+```js
+const App = () => {
+  const course = {
+    id: 1,
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10,
+        id: 1,
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7,
+        id: 2,
+      },
+      {
+        name: 'State of a component',
+        exercises: 14,
+        id: 3,
+      },
+    ],
+  }
+
+  return <Course course={course} />
+}
+```
+
+Defina un componente responsable de formatear un solo curso llamado Course.
+
+La estructura de componentes de la aplicación puede ser, por ejemplo, la siguiente:
+
+```js
+App
+  Course
+    Header
+    Content
+      Part
+      Part
+      ...
+```
+
+Por lo tanto, el componente Course contiene los componentes definidos en la parte anterior, que son responsables de representar el nombre del curso y sus partes.
+
+La página renderizada puede, por ejemplo, tener el siguiente aspecto:
+
+Todavía no necesitas la suma de los ejercicios.
+
+La aplicación debe funcionar independientemente del número de partes que tenga un curso, así que asegúrese de que la aplicación funcione si agrega o quita partes de un curso.
+
+¡Asegúrese de que la consola no muestre errores!
+
