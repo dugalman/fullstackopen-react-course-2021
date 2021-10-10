@@ -72,3 +72,12 @@ La aplicación debe funcionar independientemente del número de partes que tenga
 
 ¡Asegúrese de que la consola no muestre errores!
 
+## 2.2: Información del curso paso 7
+Muestra también la suma de los ejercicios del curso.
+
+
+## 2.3*: Información del curso, paso8
+Si aún no lo ha hecho, calcule la suma de ejercicios con el método de matriz reduce.
+
+Consejo profesional: cuando su código tiene el siguiente aspecto:
+

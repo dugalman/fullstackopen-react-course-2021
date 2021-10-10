@@ -1,4 +1,5 @@
 import React from 'react'
+import Total from './Total'
 
 /////////////////////////////////////////////////
 const Header = prop => {
@@ -37,6 +38,7 @@ const Course = ({course}) => {
     <div key={course.id}>
       <Header course={course.name} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }
