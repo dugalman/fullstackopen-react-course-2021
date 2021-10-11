@@ -81,3 +81,15 @@ Si aún no lo ha hecho, calcule la suma de ejercicios con el método de matriz r
 
 Consejo profesional: cuando su código tiene el siguiente aspecto:
 
+```js 
+const total = parts.reduce((s, p) => someMagicHere)
+```
+
+y no funciona, vale la pena usar console.log, que requiere que la función de flecha se escriba en su forma más larga:
+
+```js
+const total = parts.reduce((s, p) => {
+  console.log('what is happening', s, p)
+  return someMagicHere
+})
+```
