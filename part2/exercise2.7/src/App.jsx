@@ -16,14 +16,20 @@ const App = () => {
   const handlerOnSubmit = e => {
     e.preventDefault()
 
+    // si el nombre ya exite no permito que lo agregen de nuevo
+    if (persons.find(item => item.name === newName)) {
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
+
     // tenes que mandar un copia del array de personas
-    // o hacerlo inmutable 
+    // o hacerlo inmutable
     // NO HAGAS ARRAY.PUSH
     const person = { name: newName }
-
     console.log('person', person)
-
     setPersons([...persons, person])
+
+    //limpio el formulario
     setNewName('')
   }
 
@@ -32,7 +38,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={handlerOnSubmit}>
         <div>
-          name: 
+          name:
           <input value={newName} onChange={handlerOnChangeName} />
         </div>
         <div>
