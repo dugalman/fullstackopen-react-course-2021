@@ -3,6 +3,7 @@
 ## Link
 - see <https://fullstackopen.com/es/part2>
 - [Snippets in Visual Studio Code](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_creating-your-own-snippets)
+- [JSON Server : actua como nuestro servidor.](https://github.com/typicode/json-server)
 
 ## Abstracto
 
