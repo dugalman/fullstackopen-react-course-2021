@@ -27,7 +27,8 @@ const App = () => {
           return item.name.official.toLowerCase().includes(searchName.toLowerCase())
         })
 
-  console.log('country', countryFilter)
+        
+  // console.log('country', countryFilter)
 
   return (
     <div>
