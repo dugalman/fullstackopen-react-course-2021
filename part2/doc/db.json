@@ -41,6 +41,18 @@
       "date": "2021-11-03T18:33:57.856Z",
       "important": false,
       "id": 7
+    },
+    {
+      "content": "a new note...",
+      "date": "2021-11-05T12:27:57.216Z",
+      "important": false,
+      "id": 8
+    },
+    {
+      "content": "a new note...",
+      "date": "2021-11-05T12:30:28.897Z",
+      "important": true,
+      "id": 9
     }
   ]
 }
