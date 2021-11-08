@@ -5,13 +5,18 @@ import PhoneFilter from './components/PhoneFilter'
 import personService from './services/person'
 import Notification from './components/Notification'
 
+const makeNotificactionSuccess = (msg) => { return  {message: msg,type: 'success'}}
+const makeNotificactionError = (msg) => { return  {message: msg,type: 'error'}}
+const clearNotificaction = () =>{ return  {message: null,type: null}}
+
+
 /////////////////////////////////////////////////
 const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filterNane, setFilterNane] = useState('')
   const [persons, setPersons] = useState([])
-  const [notification, setNotificacion] = useState(null)
+  const [notification, setNotificacion] = useState(clearNotificaction())
 
   useEffect(() => {
     personService.getAll().then(allPerson => {
@@ -48,18 +53,12 @@ const App = () => {
         //limpio el formulario
         setNewName('')
         setNewPhone('')
-        setNotificacion(`Added ${newName}`)
-        setTimeout(() => {
-          setNotificacion(null)
-        }, 5000)
+        setNotificacion(makeNotificactionSuccess(`Added ${newName}`))
+        setTimeout(() => {setNotificacion(clearNotificaction())}, 5000)
       })
     } else {
-      if (
-        !window.confirm(`Seguro que desea actualizar los datos de ${newName}`)
-      ) {
-        return
-      }
-
+      if (!window.confirm(`Seguro que desea actualizar los datos de ${newName}`)) return
+      
       personService
         .update(currentPerson.id, { ...currentPerson, phone: newPhone })
         .then(newPerson => {
@@ -69,10 +68,8 @@ const App = () => {
           //limpio el formulario
           setNewName('')
           setNewPhone('')
-          setNotificacion(`Modificated ${newName}`)
-          setTimeout(() => {
-            setNotificacion(null)
-          }, 5000)
+          setNotificacion(makeNotificactionSuccess(`Modificated ${newName}`))
+          setTimeout(() => {setNotificacion(clearNotificaction())}, 5000)
         })
     }
   }
@@ -82,8 +79,8 @@ const App = () => {
       personService
         .remove(id)
         .then(deleted => {
-          setNotificacion(`Deleted ${name}`)
-          setTimeout(() => {setNotificacion(null)}, 5000)
+          setNotificacion(makeNotificactionSuccess(`Deleted ${name}`))
+          setTimeout(() => {setNotificacion(clearNotificaction())}, 5000)
           // SI SE BORRO RECARGO TODO DESDE LA BASES
           // personService.getAll().then(allPerson => {setPersons(allPerson)})
 
@@ -92,6 +89,8 @@ const App = () => {
           setPersons(filtered)
         })
         .catch(error => {
+          setNotificacion(makeNotificactionError(`Information of ${name} has alredy removed from server`));
+          setTimeout(() => {setNotificacion(clearNotificaction())}, 15000)
           console.log(error)
         })
     }
@@ -108,7 +107,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification message={notification.message} type={notification.type} />
 
       <PhoneFilter
         currentValue={filterNane}
