@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 
+// parse los request como json
 app.use(express.json())
 
 
