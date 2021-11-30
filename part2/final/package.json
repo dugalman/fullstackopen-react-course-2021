@@ -1,11 +1,7 @@
 {
-  "name": "part02",
+  "name": "exercise1.1",
   "version": "0.1.0",
   "private": true,
-  "author": {
-    "name": "damian mac dougall",
-    "email": "damianmacdougall@gmail.com"
-  },
   "devDependencies": {
     "json-server": "^0.17.0"
   },
@@ -45,5 +41,4 @@
     ]
   },
   "proxy": "http://localhost:3001"
-
 }
