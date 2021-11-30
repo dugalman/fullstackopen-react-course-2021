@@ -5,9 +5,6 @@ const app = express()
 
 
 //////////////////////// MIDLEWARE ////////////////////////////////////////////
-// parse los request como json
-app.use(express.json())
-
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -17,6 +14,9 @@ const requestLogger = (request, response, next) => {
 }
 
 app.use(requestLogger)
+
+// parse los request como json
+app.use(express.json())
 
 
 
@@ -102,14 +102,6 @@ app.delete('/api/notes/:id', (request, response) => {
 
   response.status(204).end()
 })
-
-///////////////////////////////////////////////////////////////////////////////
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-
-app.use(unknownEndpoint)
-
 
 ///////////////// MAIN ////////////////////////////////////////////////////////
 
