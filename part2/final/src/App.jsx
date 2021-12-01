@@ -5,9 +5,9 @@ import PhoneFilter from './components/PhoneFilter'
 import personService from './services/person'
 import Notification from './components/Notification'
 
-const makeNotificactionSuccess = (msg) => { return  {message: msg,type: 'success'}}
-const makeNotificactionError = (msg) => { return  {message: msg,type: 'error'}}
-const clearNotificaction = () =>{ return  {message: null,type: null}}
+const makeNotificactionSuccess = (msg) => { return { message: msg, type: 'success' } }
+const makeNotificactionError = (msg) => { return { message: msg, type: 'error' } }
+const clearNotificaction = () => { return { message: null, type: null } }
 
 
 /////////////////////////////////////////////////
@@ -26,17 +26,17 @@ const App = () => {
 
   const handlerOnChangeFilterName = e => {
     e.preventDefault()
-    console.log('filterName', e.target.value)
+    // console.log('filterName', e.target.value)
     setFilterNane(e.target.value)
   }
 
   const handlerOnChangePhone = e => {
-    console.log('phone', e.target.value)
+    // console.log('phone', e.target.value)
     setNewPhone(e.target.value)
   }
 
   const handlerOnChangeName = e => {
-    console.log('Name', e.target.value)
+    // console.log('Name', e.target.value)
     setNewName(e.target.value)
   }
 
@@ -48,19 +48,25 @@ const App = () => {
 
     // si el nombre ya exite actualizo el telefono
     if (!currentPerson) {
-      personService.create(person).then(newPerson => {
-        setPersons([...persons, newPerson])
-        //limpio el formulario
-        setNewName('')
-        setNewPhone('')
-        setNotificacion(makeNotificactionSuccess(`Added ${newName}`))
-        setTimeout(() => {setNotificacion(clearNotificaction())}, 5000)
-      })
+      personService.create(person)
+        .then(newPerson => {
+          setPersons([...persons, newPerson])
+          //limpio el formulario
+          setNewName('')
+          setNewPhone('')
+          setNotificacion(makeNotificactionSuccess(`Added ${newName}`))
+          setTimeout(() => { setNotificacion(clearNotificaction()) }, 5000)
+        })
+        .catch(err => {
+          const msg = err.response.data.error || err.message
+          setNotificacion(makeNotificactionError(msg))
+          setTimeout(() => { setNotificacion(clearNotificaction()) }, 5000)
+        })
+
     } else {
       if (!window.confirm(`Seguro que desea actualizar los datos de ${newName}`)) return
-      
-      personService
-        .update(currentPerson.id, { ...currentPerson, phone: newPhone })
+
+      personService.update(currentPerson.id, { ...currentPerson, phone: newPhone })
         .then(newPerson => {
           const filtered = persons.filter(person => person.id !== newPerson.id)
           setPersons([...filtered, newPerson])
@@ -69,8 +75,14 @@ const App = () => {
           setNewName('')
           setNewPhone('')
           setNotificacion(makeNotificactionSuccess(`Modificated ${newName}`))
-          setTimeout(() => {setNotificacion(clearNotificaction())}, 5000)
+          setTimeout(() => { setNotificacion(clearNotificaction()) }, 5000)
         })
+        .catch(err => {
+          const msg = err.response.data.error || err.message
+          setNotificacion(makeNotificactionError(msg))
+          setTimeout(() => { setNotificacion(clearNotificaction()) }, 5000)
+        })
+
     }
   }
 
@@ -80,7 +92,7 @@ const App = () => {
         .remove(id)
         .then(deleted => {
           setNotificacion(makeNotificactionSuccess(`Deleted ${name}`))
-          setTimeout(() => {setNotificacion(clearNotificaction())}, 5000)
+          setTimeout(() => { setNotificacion(clearNotificaction()) }, 5000)
           // SI SE BORRO RECARGO TODO DESDE LA BASES
           // personService.getAll().then(allPerson => {setPersons(allPerson)})
 
@@ -90,7 +102,7 @@ const App = () => {
         })
         .catch(error => {
           setNotificacion(makeNotificactionError(`Information of ${name} has alredy removed from server`));
-          setTimeout(() => {setNotificacion(clearNotificaction())}, 15000)
+          setTimeout(() => { setNotificacion(clearNotificaction()) }, 15000)
           console.log(error)
         })
     }
@@ -100,9 +112,9 @@ const App = () => {
     typeof filterNane === 'undefined' || filterNane.length === 0
       ? persons
       : persons.filter(item => {
-          console.log(item.name, filterNane)
-          return item.name.toLowerCase().includes(filterNane.toLowerCase())
-        })
+        console.log(item.name, filterNane)
+        return item.name.toLowerCase().includes(filterNane.toLowerCase())
+      })
 
   return (
     <div>
