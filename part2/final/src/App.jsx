@@ -43,14 +43,19 @@ const App = () => {
   const handlerOnSubmit = e => {
     e.preventDefault()
 
-    const person = { name: newName, phone: newPhone }
+    const person = { name: newName, number: newPhone }
     const currentPerson = persons.find(item => item.name === newName)
 
-    // si el nombre ya exite actualizo el telefono
+    // Agrero la nueva perosna
     if (!currentPerson) {
       personService.create(person)
         .then(newPerson => {
-          setPersons([...persons, newPerson])
+          // EN LUGAR DE ACTUALIZR UN REGISTRO, porque necesito el ID 
+          // setPersons([...persons, person])
+          // RECARGO TODOS LOS ELEMENTOS
+          personService.getAll().then(allPerson => {setPersons(allPerson)})
+
+
           //limpio el formulario
           setNewName('')
           setNewPhone('')
@@ -63,10 +68,10 @@ const App = () => {
           setTimeout(() => { setNotificacion(clearNotificaction()) }, 5000)
         })
 
-    } else {
+    } else { // si el nombre ya exite actualizo el telefono
       if (!window.confirm(`Seguro que desea actualizar los datos de ${newName}`)) return
 
-      personService.update(currentPerson.id, { ...currentPerson, phone: newPhone })
+      personService.update(currentPerson.id, { ...currentPerson, number: newPhone })
         .then(newPerson => {
           const filtered = persons.filter(person => person.id !== newPerson.id)
           setPersons([...filtered, newPerson])

@@ -5,7 +5,7 @@ const Person = ({ personFilter, handlerDelete }) => {
     <ul>
       {personFilter.map(p => (
         <li key={p.name}>
-          {p.name} {p.phone}
+          {p.name} {p.number}
           <button onClick={() => handlerDelete(p.id, p.name)}>delete</button>
         </li>
       ))}
