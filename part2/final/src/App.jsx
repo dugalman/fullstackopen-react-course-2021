@@ -52,13 +52,16 @@ const App = () => {
         .then(newPerson => {
           // EN LUGAR DE ACTUALIZR UN REGISTRO, porque necesito el ID 
           // setPersons([...persons, person])
-          // RECARGO TODOS LOS ELEMENTOS
-          personService.getAll().then(allPerson => {setPersons(allPerson)})
-
 
           //limpio el formulario
           setNewName('')
           setNewPhone('')
+        })
+        .then( () =>
+          // RECARGO TODOS LOS ELEMENTOS
+          personService.getAll().then(allPerson => setPersons(allPerson))
+        )
+        .then( () =>  {
           setNotificacion(makeNotificactionSuccess(`Added ${newName}`))
           setTimeout(() => { setNotificacion(clearNotificaction()) }, 5000)
         })

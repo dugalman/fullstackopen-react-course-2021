@@ -12,7 +12,7 @@ const create = person => {
 }
 
 const update = (id, person) => {
-  const request = axios.put(`${baseUrl}/${id}`, person)
+  const request = axios.put( baseUrl, person)
   return request.then(response => response.data)
 }
 
