@@ -1,11 +1,11 @@
 const Note = require('../models/note')
 const User = require('../models/user')
 
-
 const initialUsers = [
   {
     '_id': '620d98e710a846aac5b0d6c6',
     'username': 'mluukai',
+    'password': 'salainen',
     'passwordHash': '$2b$10$1b49IS61fteKQc5u5GW7G.YyyfXUzRB5rZzh9ehQlYHd6OFaEkWNe',
   }
 ]

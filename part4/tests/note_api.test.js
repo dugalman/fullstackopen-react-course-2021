@@ -9,11 +9,34 @@ const api = supertest(app)
 const User = require('../models/user')
 const Note = require('../models/note')
 
+let headers
+
+const getBearer = async () => {
+  const credential = {
+    'username': helper.initialUsers[0].username,
+    'password': helper.initialUsers[0].password,
+  }
+
+  await api
+    .post('/api/login')
+    .send(credential)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+  //
+  const result = await api.post('/api/login').send(credential)
+  const token = result.body.token
+  return token
+}
 describe('when there is initially some notes saved', () => {
 
   beforeEach(async () => {
+    //
     await Note.deleteMany({})
     await Note.insertMany(helper.initialNotes)
+    //
+    await User.deleteMany({})
+    await User.insertMany(helper.initialUsers)
+
   })
 
   test('notes are returned as json', async () => {
@@ -77,6 +100,12 @@ describe('when there is initially some notes saved', () => {
   describe('addition of a new note', () => {
 
     test('succeeds with valid data', async () => {
+
+      const token = await getBearer()
+
+      headers = { 'Authorization': `bearer ${token}` }
+
+
       const newNote = {
         content: 'async/await simplifies making async calls',
         important: true,
@@ -84,10 +113,10 @@ describe('when there is initially some notes saved', () => {
 
       await api
         .post('/api/notes')
+        .set(headers)
         .send(newNote)
         .expect(201)
         .expect('Content-Type', /application\/json/)
-
 
       const notesAtEnd = await helper.notesInDb()
       expect(notesAtEnd).toHaveLength(helper.initialNotes.length + 1)
@@ -96,21 +125,20 @@ describe('when there is initially some notes saved', () => {
       expect(contents).toContain(
         'async/await simplifies making async calls'
       )
+
     })
 
-    test('fails with status code 400 if data invalid', async () => {
-      const newNote = {
-        important: true
-      }
+    test('fails with status code 401 if data invalid', async () => {
 
-      await api
+      const newNote = { important: true }
+
+      const response = await api
         .post('/api/notes')
         .send(newNote)
-        .expect(400)
+        .expect(401)
 
-      const notesAtEnd = await helper.notesInDb()
+      expect(response.body.error).toContain('invalid token')
 
-      expect(notesAtEnd).toHaveLength(helper.initialNotes.length)
     })
   })
 
