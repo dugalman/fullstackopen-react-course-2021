@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+
+{
+    "title": "Hipertextual",
+    "author": "Damian Mac dougall",
+    "url": "https://hipertextual.com/",
+    "likes": 99
+}
