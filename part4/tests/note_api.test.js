@@ -10,6 +10,7 @@ const User = require('../models/user')
 const Note = require('../models/note')
 
 describe('when there is initially some notes saved', () => {
+
   beforeEach(async () => {
     await Note.deleteMany({})
     await Note.insertMany(helper.initialNotes)
@@ -57,7 +58,7 @@ describe('when there is initially some notes saved', () => {
     test('fails with statuscode 404 if note does not exist', async () => {
       const validNonexistingId = await helper.nonExistingId()
 
-      console.log(validNonexistingId)
+      // console.log(validNonexistingId)
 
       await api
         .get(`/api/notes/${validNonexistingId}`)
@@ -74,6 +75,7 @@ describe('when there is initially some notes saved', () => {
   })
 
   describe('addition of a new note', () => {
+
     test('succeeds with valid data', async () => {
       const newNote = {
         content: 'async/await simplifies making async calls',
@@ -113,6 +115,7 @@ describe('when there is initially some notes saved', () => {
   })
 
   describe('deletion of a note', () => {
+
     test('succeeds with status code 204 if id is valid', async () => {
       const notesAtStart = await helper.notesInDb()
       const noteToDelete = notesAtStart[0]
