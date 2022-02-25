@@ -6,8 +6,8 @@ const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 
-const User = require('../models/user')
-const Note = require('../models/note')
+const User = require('../models/User')
+const Note = require('../models/Note')
 
 let headers
 
