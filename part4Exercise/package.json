@@ -1,12 +1,13 @@
 {
-  "name": "exercises 04",
-  "version": "1.0.0",
+  "name": "exercises-blog-list",
+  "version": "4.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
+    "lint-fix": "eslint --fix .",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "coverage": "cross-env NODE_ENV=test jest --coverage",
     "kill": "lsof -ti:3003 | xargs kill"
