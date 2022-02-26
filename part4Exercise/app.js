@@ -7,6 +7,7 @@ require('express-async-errors')
 
 // ROUTER INCLUDES
 const blogsRouter = require('./controllers/BlogController')
+const middleware = require('./utils/middleware')
 
 
 const logger = require('./utils/logger')
@@ -26,11 +27,15 @@ mongoose.connect(config.MONGODB_URI)
 // set up EXPRESS
 app.use(cors())
 app.use(express.json())
+app.use(middleware.requestLogger)
 
 
-// ADD ROUTES TO EXPRESS
+// ADD EXPRESS HANDLER'S ROUTE
 app.use('/api/blogs', blogsRouter)
 
+// ADD DEFAULT HANDLER'S
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 
 
