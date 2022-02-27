@@ -22,7 +22,7 @@ test('unknown End point', async () => {
 })
 
 
-describe('blogs method get', () => {
+describe('read blogs', () => {
 
   beforeEach(async () => {
     await Blog.deleteMany({})
@@ -63,6 +63,56 @@ describe('blogs method get', () => {
 
 })
 
+describe('create blogs', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    await Blog.insertMany(helper.listOfBlogs)
+  })
+
+  test('add new blog and check has one more', async () => {
+    const blogsBefore = (await Blog.find({})).length
+
+    const newBlog = {
+      'title': 'titulo 1',
+      'author': 'damian mac dougall',
+      'url': 'www.yahoo.com',
+      'likes': 98
+    }
+
+    await api.
+      post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    //verifico que hay un elemento mas
+    const blogsAfter = (await Blog.find({})).length
+    expect(blogsAfter).toBe(blogsBefore + 1)
+
+  })
+
+  test('add new blog and verify data', async () => {
+
+    const newBlog = {
+      'title': 'titulo 1',
+      'author': 'damian mac dougall',
+      'url': 'www.yahoo.com',
+      'likes': 98
+    }
+
+    const response = await api.
+      post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    //verifico el objeto devuelto
+    expect(response.body.title).toBe(newBlog.title)
+    expect(response.body.author).toBe(newBlog.author)
+    expect(response.body.url).toBe(newBlog.url)
+    expect(response.body.likes).toBe(98)
+  })
+})
 
 
 afterAll(() => {
