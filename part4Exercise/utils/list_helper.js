@@ -31,8 +31,35 @@ const favoriteBlog = (blogs) => {
 }
 
 
+function mostBlogs(blogs) {
+
+  if (blogs.length===0) return { author: '', blogs: 0 }
+  if (blogs.length===1) return { author:  blogs[0].author , blogs: 1 }
+
+
+  const acumulator = {}
+  const max = { author: '', blogs: 0 }
+  for (let i = 0; i < blogs.length; i++) {
+    let actual = blogs[i]
+
+    acumulator[actual.author] = (acumulator[actual.author] === undefined)
+      ? 1
+      : acumulator[actual.author] + 1
+
+    if (acumulator[actual.author] > max.blogs) {
+      max.blogs = acumulator[actual.author]
+      max.author = actual.author
+    }
+  }
+
+  return max
+}
+
+
+
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }
