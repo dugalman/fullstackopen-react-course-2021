@@ -33,8 +33,8 @@ const favoriteBlog = (blogs) => {
 
 function mostBlogs(blogs) {
 
-  if (blogs.length===0) return { author: '', blogs: 0 }
-  if (blogs.length===1) return { author:  blogs[0].author , blogs: 1 }
+  if (blogs.length === 0) return { author: '', blogs: 0 }
+  if (blogs.length === 1) return { author: blogs[0].author, blogs: 1 }
 
 
   const acumulator = {}
@@ -55,11 +55,37 @@ function mostBlogs(blogs) {
   return max
 }
 
+function mostLikes(blogs) {
+
+  if (blogs.length === 0) return { author: '', likes: 0 }
+  if (blogs.length === 1) return { author: blogs[0].author, likes: blogs[0].likes }
+
+  const max = { author: '', likes: 0 }
+
+  const acumulator = {}
+  for (let i = 0; i < blogs.length; i++) {
+    let actual = blogs[i]
+
+    acumulator[actual.author] = (acumulator[actual.author] === undefined)
+      ? actual.likes
+      : acumulator[actual.author] + actual.likes
+
+    if (acumulator[actual.author] > max.likes) {
+      max.likes = acumulator[actual.author]
+      max.author = actual.author
+    }
+  }
+
+  return max
+
+
+}
 
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
