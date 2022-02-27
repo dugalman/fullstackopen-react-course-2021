@@ -112,6 +112,48 @@ describe('create blogs', () => {
     expect(response.body.url).toBe(newBlog.url)
     expect(response.body.likes).toBe(98)
   })
+
+
+  test('The likes property must have a default value of zero', async () => {
+
+    const newBlog = await api.
+      post('/api/blogs')
+      .send({ 'title': 'SIN LIKES', 'author': 'damian mac dougall', 'url': 'www.yahoo.com' })
+      .expect(201)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(newBlog.body.likes).toBe(0)
+
+    //Check into database
+    const rta = await Blog.findById(newBlog.body.id)
+    expect(rta.likes).toBeDefined()
+    expect(rta.likes).toBe(0)
+  })
+
+
+  test('The Title property must required', async () => {
+    const response = await api.
+      post('/api/blogs')
+      .send({ 'author': 'NO TITLE', 'url': 'www.yahoo.com' })
+      .expect(400)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(response.body.error).toBe('Blog validation failed: title: Path `title` is required.')
+  })
+
+
+  test('The Url property must required', async () => {
+    const response = await api.
+      post('/api/blogs')
+      .send({ 'author': 'NO URL', 'title': 'NO URL' })
+      .expect(400)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(response.body.error).toBe('Blog validation failed: url: Path `url` is required.')
+
+
+  })
+
 })
 
 
