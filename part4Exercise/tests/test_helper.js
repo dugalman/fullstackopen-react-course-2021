@@ -1,3 +1,5 @@
+const Blog = require('../models/Blog')
+
 
 const listOfBlogs = [
   {
@@ -60,8 +62,6 @@ const listWithOneBlog = [
     __v: 0
   }
 ]
-
-
 
 module.exports = {
   listOfBlogs,

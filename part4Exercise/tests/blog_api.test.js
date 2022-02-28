@@ -156,6 +156,57 @@ describe('create blogs', () => {
 
 })
 
+describe('Erase blog', () => {
+  test('succesfull deleted', async () => {
+
+    // make temporal blog
+    const blog = new Blog({ title: 'titulo', author: 'autor', url: 'www.example.com' })
+    await blog.save()
+    const id = blog._id.toString()
+
+    // call delete api method
+    await api.
+      delete(`/api/blogs/${id}`)
+      .expect(204)
+
+    // check that the blog was deleted
+    const notFoundBlog = Blog.findById(id)
+    expect(notFoundBlog._id).toBeUndefined()
+
+  })
+
+  test('invalid format id', async () => {
+    // make temporal blog
+    const id = 'qwerty'
+
+    // call delete api method
+    const response = await api.
+      delete(`/api/blogs/${id}`)
+      .expect(400)
+
+    expect(response.body.error).toBe('malformatted id')
+
+  })
+
+  test('non existing blog', async () => {
+
+    // make temporal blog
+    const blog = new Blog({ title: 'titulo', author: 'autor', url: 'www.example.com' })
+    await blog.save()
+    await blog.delete()
+    const id = blog._id.toString()
+
+    // call delete api method
+    await api.
+      delete(`/api/blogs/${id}`)
+      .expect(204)
+
+    // check that the blog was deleted
+    const notFoundBlog = Blog.findById(id)
+    expect(notFoundBlog._id).toBeUndefined()
+  })
+
+})
 
 afterAll(() => {
   mongoose.connection.close()
