@@ -1,4 +1,3 @@
-const Blog = require('../models/Blog')
 
 
 const listOfBlogs = [
@@ -63,7 +62,31 @@ const listWithOneBlog = [
   }
 ]
 
+
+
+const listOfUsers = [
+  {
+    _id: '6206bd5b70fdcec54b9298db',
+    name: 'Damian Mac Dougall',
+    username: 'dmacdougall',
+    password: '123456',
+    passwordHash: '$2b$10$POZO.rxpkccI6XmGD37OUOcRRKDMch3CIXyh8fiaS/GbYnK0ecJzG',
+    __v: 0
+  },
+  {
+    _id: '6204faaa8be0dac9c6e80eb3',
+    name: 'root',
+    username: 'root',
+    password: '123456',
+    passwordHash: '$2b$10$6TnOj3nrL4OhmNHOjL6Rk.4kZ8P4F.zoegivCXK316aU7T7DLsp86',
+    __v: 0
+  }
+]
+
+
+
 module.exports = {
   listOfBlogs,
-  listWithOneBlog
+  listWithOneBlog,
+  listOfUsers
 }
