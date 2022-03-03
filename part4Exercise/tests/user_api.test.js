@@ -13,7 +13,7 @@ describe('read blogs', () => {
 
   beforeEach(async () => {
     await User.deleteMany({})
-    await User.insertMany(helper.listOfUser)
+    await User.insertMany(helper.listOfUsers)
   })
 
   test('users are returned as json', async () => {
@@ -33,7 +33,7 @@ describe('read blogs', () => {
   test('on not empty colection return the correct size', async () => {
     const response = await api.get('/api/users')
 
-    expect(response.body).toHaveLength( helper.listOfUser.length  )
+    expect(response.body).toHaveLength( helper.listOfUsers.length  )
   })
 
 
