@@ -7,11 +7,10 @@ require('express-async-errors')
 
 // ROUTER INCLUDES
 const blogsRouter = require('./controllers/BlogController')
+const usersRouter = require('./controllers/UserController')
 const middleware = require('./utils/middleware')
 
-
 const logger = require('./utils/logger')
-
 
 // START
 logger.info('connecting to', config.MONGODB_URI)
@@ -32,11 +31,10 @@ app.use(middleware.requestLogger)
 
 // ADD EXPRESS HANDLER'S ROUTE
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users', usersRouter)
 
 // ADD DEFAULT HANDLER'S
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
-
-
 
 module.exports = app

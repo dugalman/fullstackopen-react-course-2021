@@ -3,10 +3,10 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/Blog')
 
 blogsRouter.get('/', async (request, response) => {
-  const notes = await Blog
+  const blogs = await Blog
     .find({})
 
-  response.json(notes)
+  response.json(blogs)
 })
 
 
