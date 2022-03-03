@@ -208,6 +208,53 @@ describe('Erase blog', () => {
 
 })
 
+describe('Update blog', () => {
+
+  test('Update modify number of likes successfully', async () => {
+    // make temporal blog
+    const blog = new Blog({ title: 'titulo', author: 'autor', url: 'www.example.com', likes: 99 })
+    await blog.save()
+    const id = blog._id.toString()
+
+    // call delete api method
+    const response = await api
+      .put(`/api/blogs/${id}`)
+      .send({ likes: 100 })
+      .expect(201)
+
+    expect(response.body.likes).toBe(100)
+  })
+
+  test('Update modify number of likes fail not a number', async () => {
+    // make temporal blog
+    const blog = new Blog({ title: 'titulo', author: 'autor', url: 'www.example.com', likes: 99 })
+    await blog.save()
+    const id = blog._id.toString()
+
+    // call delete api method
+    await api
+      .put(`/api/blogs/${id}`)
+      .send({ likes: 'wtf' })
+      .expect(400)
+  })
+
+  test('Update fail modify number of likes not found blog', async () => {
+
+    const blog = new Blog({ title: 'titulo', author: 'autor', url: 'www.example.com', likes: 90 })
+    await blog.save()
+    const id = blog._id.toString()
+    await blog.remove()
+
+    // call delete api method
+    await api
+      .put(`/api/blogs/${id}`)
+      .send({ likes: 101 })
+      .expect(404)
+
+  })
+
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
