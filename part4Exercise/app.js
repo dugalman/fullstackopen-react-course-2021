@@ -8,6 +8,7 @@ require('express-async-errors')
 // ROUTER INCLUDES
 const blogsRouter = require('./controllers/BlogController')
 const usersRouter = require('./controllers/UserController')
+const loginRouter = require('./controllers/LoginController')
 const middleware = require('./utils/middleware')
 
 const logger = require('./utils/logger')
@@ -32,6 +33,7 @@ app.use(middleware.requestLogger)
 // ADD EXPRESS HANDLER'S ROUTE
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login',loginRouter)
 
 // ADD DEFAULT HANDLER'S
 app.use(middleware.unknownEndpoint)
