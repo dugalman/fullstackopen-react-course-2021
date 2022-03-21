@@ -74,6 +74,14 @@ const listOfUsers = [
     __v: 0
   },
   {
+    _id: '6206bd5b70fdcec54b9298da',
+    name: 'Isabel Cordone',
+    username: 'icordone',
+    password: '123456',
+    passwordHash: '$2b$10$kFzCRxiWtWXdAqIgGx46OeopMPwdSRJcR1qP3jlNL3/bt9Rot5K.i',
+    __v: 0
+  },
+  {
     _id: '6204faaa8be0dac9c6e80eb3',
     name: 'root',
     username: 'root',
