@@ -8,6 +8,23 @@ const Blog = require('../models/Blog')
 
 const helper = require('./test_helper')
 
+const getBearer = async () => {
+  const credential = {
+    'username': helper.listOfUsers[0].username,
+    'password': helper.listOfUsers[0].password,
+  }
+
+  await api
+    .post('/api/login')
+    .send(credential)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+  //
+  const result = await api.post('/api/login').send(credential)
+  const token = result.body.token
+  return token
+}
+
 
 // SET DATABASE
 test('unknown End point', async () => {
@@ -64,9 +81,28 @@ describe('read blogs', () => {
 })
 
 describe('create blogs', () => {
+
+  let headers
+
   beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(helper.listOfBlogs)
+
+    const token = await getBearer()
+    headers = { 'Authorization': `bearer ${token}` }
+  })
+
+  test('fail create blog without login', async () => {
+
+    const newBlog = { 'title': 'titulo 1', 'author': 'damian mac dougall', 'url': 'www.yahoo.com', 'likes': 98 }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(response.body.error).toBe('invalid token')
+
   })
 
   test('add new blog and check has one more', async () => {
@@ -82,6 +118,7 @@ describe('create blogs', () => {
     await api.
       post('/api/blogs')
       .send(newBlog)
+      .set(headers)
       .expect(201)
       .expect('Content-Type', 'application/json; charset=utf-8')
 
@@ -103,6 +140,7 @@ describe('create blogs', () => {
     const response = await api.
       post('/api/blogs')
       .send(newBlog)
+      .set(headers)
       .expect(201)
       .expect('Content-Type', 'application/json; charset=utf-8')
 
@@ -111,6 +149,8 @@ describe('create blogs', () => {
     expect(response.body.author).toBe(newBlog.author)
     expect(response.body.url).toBe(newBlog.url)
     expect(response.body.likes).toBe(98)
+
+    expect(response.body.author).toBe(helper.listOfUsers[0].name.toLowerCase())
   })
 
 
@@ -120,6 +160,7 @@ describe('create blogs', () => {
       post('/api/blogs')
       .send({ 'title': 'SIN LIKES', 'author': 'damian mac dougall', 'url': 'www.yahoo.com' })
       .expect(201)
+      .set(headers)
       .expect('Content-Type', 'application/json; charset=utf-8')
 
     expect(newBlog.body.likes).toBe(0)
@@ -135,6 +176,7 @@ describe('create blogs', () => {
     const response = await api.
       post('/api/blogs')
       .send({ 'author': 'NO TITLE', 'url': 'www.yahoo.com' })
+      .set(headers)
       .expect(400)
       .expect('Content-Type', 'application/json; charset=utf-8')
 
@@ -145,6 +187,7 @@ describe('create blogs', () => {
   test('The Url property must required', async () => {
     const response = await api.
       post('/api/blogs')
+      .set(headers)
       .send({ 'author': 'NO URL', 'title': 'NO URL' })
       .expect(400)
       .expect('Content-Type', 'application/json; charset=utf-8')
