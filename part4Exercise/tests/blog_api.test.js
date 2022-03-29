@@ -5,6 +5,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/Blog')
+const User = require('../models/User')
 
 const helper = require('./test_helper')
 
@@ -25,6 +26,7 @@ const getBearer = async () => {
   return token
 }
 
+let headers
 
 // SET DATABASE
 test('unknown End point', async () => {
@@ -82,8 +84,6 @@ describe('read blogs', () => {
 
 describe('create blogs', () => {
 
-  let headers
-
   beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(helper.listOfBlogs)
@@ -104,6 +104,7 @@ describe('create blogs', () => {
     expect(response.body.error).toBe('invalid token')
 
   })
+
 
   test('add new blog and check has one more', async () => {
     const blogsBefore = (await Blog.find({})).length
@@ -131,7 +132,7 @@ describe('create blogs', () => {
   test('add new blog and verify data', async () => {
 
     const newBlog = {
-      'title': 'titulo 1',
+      'title': 'titulo 1, add new blog and verify data',
       'author': 'damian mac dougall',
       'url': 'www.yahoo.com',
       'likes': 98
@@ -200,16 +201,29 @@ describe('create blogs', () => {
 })
 
 describe('Erase blog', () => {
+
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    await Blog.insertMany(helper.listOfBlogs)
+
+    await User.deleteMany({})
+    await User.insertMany(helper.listOfUsers)
+
+    const token = await getBearer()
+    headers = { 'Authorization': `bearer ${token}` }
+  })
+
+
   test('succesfull deleted', async () => {
 
     // make temporal blog
-    const blog = new Blog({ title: 'titulo', author: 'autor', url: 'www.example.com' })
-    await blog.save()
+    const blog = await Blog.findOne({})
     const id = blog._id.toString()
 
     // call delete api method
-    await api.
-      delete(`/api/blogs/${id}`)
+    await api
+      .delete(`/api/blogs/${id}`)
+      .set(headers)
       .expect(204)
 
     // check that the blog was deleted
@@ -223,26 +237,57 @@ describe('Erase blog', () => {
     const id = 'qwerty'
 
     // call delete api method
-    const response = await api.
-      delete(`/api/blogs/${id}`)
+    const response = await api
+      .delete(`/api/blogs/${id}`)
+      .set(headers)
       .expect(400)
 
     expect(response.body.error).toBe('malformatted id')
 
   })
 
-  test('non existing blog', async () => {
-
+  test('unauthorized user, dont sent', async () => {
     // make temporal blog
-    const blog = new Blog({ title: 'titulo', author: 'autor', url: 'www.example.com' })
-    await blog.save()
-    await blog.delete()
-    const id = blog._id.toString()
+    const id = 'qwerty'
 
     // call delete api method
-    await api.
-      delete(`/api/blogs/${id}`)
+    const response = await api
+      .delete(`/api/blogs/${id}`)
+      .expect(401)
+    expect(response.body.error).toBe('invalid token')
+  })
+
+  test('unauthorized user, different user', async () => {
+
+    // find any blog of differente to login
+    const blog = await Blog.findOne({ user: helper.listOfUsers[1]._id })
+    const id = blog._id.toString()
+
+
+    // call delete api method
+    const response = await api
+      .delete(`/api/blogs/${id}`)
+      .set(headers)
+      .expect(401)
+    expect(response.body.error).toBe('Unauthorized')
+  })
+
+
+  test('not existing blog correct User', async () => {
+
+    // make temporal blog
+    const blog = await Blog.findOne({ user: helper.listOfUsers[0]._id })
+    const id = blog._id.toString()
+    await blog.delete()
+
+
+    // call delete api method
+    await api
+      .delete(`/api/blogs/${id}`)
+      .set(headers)
       .expect(204)
+
+
 
     // check that the blog was deleted
     const notFoundBlog = Blog.findById(id)

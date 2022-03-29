@@ -7,6 +7,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "test2": "npm test --  -t 'fail create blog without login'",
     "coverage": "cross-env NODE_ENV=test jest --coverage",
     "kill": "lsof -ti:3003 | xargs kill",
     "lint": "eslint .",
