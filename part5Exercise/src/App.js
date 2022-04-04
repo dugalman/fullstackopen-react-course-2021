@@ -20,6 +20,11 @@ const App = () => {
     setTimeout(() => { setErrorMessage(null) }, 5000)
   }
 
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    window.localStorage.removeItem('loggedNoteappUser')
+    window.location.reload();
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -37,6 +42,18 @@ const App = () => {
       showError('wrong credentials')
     }
   }
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
+
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -59,8 +76,12 @@ const App = () => {
           setPassword={setPassword} />
         :
         <div>
-          <h1>Welcome {user.username}</h1>
-          <h2>blogs</h2>
+
+          <h2>Blogs</h2>
+          <p>Welcome {user.name}
+            <button type="button" onClick={handleLogout}>logout</button>
+          </p>
+
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
