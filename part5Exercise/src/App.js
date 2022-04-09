@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 
 
 const App = () => {
@@ -32,6 +33,7 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password, })
 
+      //guardar la session el local storage
       window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
@@ -51,9 +53,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-
-
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -77,14 +76,18 @@ const App = () => {
         :
         <div>
 
-          <h2>Blogs</h2>
-          <p>Welcome {user.name}
-            <button type="button" onClick={handleLogout}>logout</button>
-          </p>
+          <h1>Welcome {user.name}<button type="button" onClick={handleLogout}>logout</button></h1>
 
+
+          <h2>Create New Blog</h2>
+          <BlogForm />
+
+
+          <h2>Blogs</h2>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
+
         </div>
       }
     </div>
