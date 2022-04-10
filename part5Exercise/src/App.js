@@ -10,7 +10,8 @@ import BlogForm from './components/BlogForm'
 const App = () => {
   const [blogs, setBlogs] = useState([])
 
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationType, setNotificationType] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -21,16 +22,21 @@ const App = () => {
   const [url, setUrl] = useState("")
 
   function showError(msg) {
-    setErrorMessage(msg)
-    setTimeout(() => { setErrorMessage(null) }, 5000)
+    setNotificationMessage(msg)
+    setNotificationType('error')
+    setTimeout(() => { notificationMessage(null); notificationType(null) }, 5000)
+  }
+
+  function showSucess(msg) {
+    setNotificationMessage(msg)
+    setNotificationType('success')
+    setTimeout(() => { notificationMessage(null); notificationType(null) }, 5000)
   }
 
   const createBlog = async (event) => {
     event.preventDefault()
-
     blogService.createNew(title, author, url)
   }
-
 
   const handleLogout = async (event) => {
     event.preventDefault()
@@ -51,6 +57,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+
+      showSucess('belcome back')
     } catch (exception) {
       showError('wrong credentials')
     }
@@ -74,7 +82,7 @@ const App = () => {
 
 
     <div>
-      <Notification message={errorMessage} />
+      <Notification message={notificationMessage} type={notificationType} />
 
       {user === null
         ? <LoginForm
