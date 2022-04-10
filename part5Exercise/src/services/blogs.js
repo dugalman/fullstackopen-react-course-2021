@@ -10,36 +10,21 @@ const setToken = newToken => {
 
 
 const getAll = async () => {
-  // console.log("getall");
-  try {
-    const response = await axios.get(baseUrl)
-    // console.log(response);
-    return response.data
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await axios.get(baseUrl)
+  return response.data
 }
 
 
 const createNew = async (title, author, url, likes = 0) => {
 
-  console.log("createNew");
-
   const newBlog = { title, author, url, likes }
-
   const config = {
     headers: { 'Authorization': token }
   }
 
-
-  try {
-    const response = await axios.post(baseUrl, newBlog, config)
-    console.log(response);
-    return response.data
-  } catch (error) {
-    console.error(error);
-  }
-
+  const response = await axios.post(baseUrl, newBlog, config)
+  // console.log(response);
+  return response.data
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

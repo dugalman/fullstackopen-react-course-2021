@@ -6,8 +6,6 @@ const login = async credentials => {
   return response.data
 }
 
-
-
 const sessionDestroy = () => {
   window.localStorage.removeItem('loggedNoteappUser')
 }

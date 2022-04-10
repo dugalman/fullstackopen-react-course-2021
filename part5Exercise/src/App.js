@@ -24,31 +24,52 @@ const App = () => {
   function showError(msg) {
     setNotificationMessage(msg)
     setNotificationType('error')
-    setTimeout(() => { notificationMessage(null); notificationType(null) }, 5000)
+    setTimeout(() => { setNotificationMessage(null); setNotificationType(null) }, 5000)
   }
 
   function showSucess(msg) {
     setNotificationMessage(msg)
     setNotificationType('success')
-    setTimeout(() => { notificationMessage(null); notificationType(null) }, 5000)
+    setTimeout(() => { setNotificationMessage(null); setNotificationType(null) }, 5000)
+  }
+
+  async function updateBlog() {
+    const blogs = await blogService.getAll();
+    setBlogs(blogs)
   }
 
   const createBlog = async (event) => {
     event.preventDefault()
-    blogService.createNew(title, author, url)
+
+    try {
+      const blog = await blogService.createNew(title, author, url)
+      // console.log('blog',blog)
+      showSucess(`A new blog "${blog.title}" by "${blog.author}" added`)
+      updateBlog()
+    } catch (error) {
+
+      let msg = 'ERROR'
+
+      if (error.response) { msg = error.response.data.error }
+      else if (error.request) { msg = error.request.statusMessage }
+      else if (error.message) { msg = error.message }
+
+      showError(msg)
+    }
   }
 
   const handleLogout = async (event) => {
     event.preventDefault()
     loginService.sessionDestroy()
     window.location.reload();
+    showSucess('Bye bye')
   }
 
   const handleLogin = async (event) => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password, })
+      const user = await loginService.login({ username, password })
 
       //guardar la session el local storage
       loginService.sessionPut(user)
@@ -57,7 +78,6 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-
       showSucess('belcome back')
     } catch (exception) {
       showError('wrong credentials')
@@ -73,9 +93,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    blogService.getAll()
-      .then(blogs => setBlogs(blogs)
-      )
+    updateBlog()
+    //  blogService.getAll()   .then(blogs => setBlogs(blogs)   )
   }, [])
 
   return (
