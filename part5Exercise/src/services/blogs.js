@@ -9,32 +9,42 @@ const setToken = newToken => {
 }
 
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const getAll = async () => {
+  // console.log("getall");
+  try {
+    const response = await axios.get(baseUrl)
+    // console.log(response);
+    return response.data
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 
-const createNew = (data, session) => {
+const createNew = async (title, author, url, likes = 0) => {
 
+  console.log("createNew");
 
-  const newBlog = {
-    "title": data.title,
-    "author": data.author,
-    "url": data.url,
-    "likes": 99
+  const newBlog = { title, author, url, likes }
+
+  const config = {
+    headers: { 'Authorization': token }
   }
 
-  const headers = session
 
-  const request = axios
-    .post(baseUrl)
-    .send(newBlog)
-    .set(headers)
-  return request.then(response => response.data)
+  try {
+    const response = await axios.post(baseUrl, newBlog, config)
+    console.log(response);
+    return response.data
+  } catch (error) {
+    console.error(error);
+  }
+
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getAll,
+  createNew,
   setToken
 }

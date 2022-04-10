@@ -28,9 +28,7 @@ const App = () => {
   const createBlog = async (event) => {
     event.preventDefault()
 
-    const user = loginService.sessionGet()
-    const data = { title, author, url }
-    blogService.createBlog(data, user)
+    blogService.createNew(title, author, url)
   }
 
 
@@ -47,7 +45,7 @@ const App = () => {
       const user = await loginService.login({ username, password, })
 
       //guardar la session el local storage
-      loginService.sessionPut( user)  
+      loginService.sessionPut(user)
 
       blogService.setToken(user.token)
       setUser(user)
@@ -67,9 +65,9 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll()
+      .then(blogs => setBlogs(blogs)
+      )
   }, [])
 
   return (
