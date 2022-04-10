@@ -6,4 +6,25 @@ const login = async credentials => {
   return response.data
 }
 
-export default { login }
+
+
+const sessionDestroy = () => {
+  window.localStorage.removeItem('loggedNoteappUser')
+}
+
+const sessionPut = (user) =>{
+  window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
+}
+
+const sessionGet = () => {
+  const session = JSON.parse(window.localStorage.getItem('loggedNoteappUser'))
+  return session
+}
+
+
+export default { 
+  login ,
+  sessionGet,
+  sessionPut,
+  sessionDestroy
+}

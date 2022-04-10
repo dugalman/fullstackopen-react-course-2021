@@ -16,14 +16,27 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [url, setUrl] = useState("")
+
   function showError(msg) {
     setErrorMessage(msg)
     setTimeout(() => { setErrorMessage(null) }, 5000)
   }
 
+  const createBlog = async (event) => {
+    event.preventDefault()
+
+    const user = loginService.sessionGet()
+    const data = { title, author, url }
+    blogService.createBlog(data, user)
+  }
+
+
   const handleLogout = async (event) => {
     event.preventDefault()
-    window.localStorage.removeItem('loggedNoteappUser')
+    loginService.sessionDestroy()
     window.location.reload();
   }
 
@@ -34,7 +47,7 @@ const App = () => {
       const user = await loginService.login({ username, password, })
 
       //guardar la session el local storage
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
+      loginService.sessionPut( user)  
 
       blogService.setToken(user.token)
       setUser(user)
@@ -46,11 +59,10 @@ const App = () => {
   }
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = loginService.sessionGet()
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      setUser(loggedUserJSON)
+      blogService.setToken(loggedUserJSON.token)
     }
   }, [])
 
@@ -80,7 +92,15 @@ const App = () => {
 
 
           <h2>Create New Blog</h2>
-          <BlogForm />
+          <BlogForm
+            handleCreate={createBlog}
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            url={url}
+            setUrl={setUrl}
+          />
 
 
           <h2>Blogs</h2>
