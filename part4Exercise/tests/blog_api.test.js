@@ -92,6 +92,20 @@ describe('create blogs', () => {
     headers = { 'Authorization': `bearer ${token}` }
   })
 
+  test('fail create blog because empty params', async () => {
+
+    const newBlog = { 'title': '', 'author': '', 'url': '', 'likes': 0 }
+    const response = await api
+      .post('/api/blogs')
+      .set(headers)
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(response.body.error).toBe('Blog validation failed: title: Path `title` is required., url: Path `url` is required.')
+
+  })
+
   test('fail create blog without login', async () => {
 
     const newBlog = { 'title': 'titulo 1', 'author': 'damian mac dougall', 'url': 'www.yahoo.com', 'likes': 98 }
