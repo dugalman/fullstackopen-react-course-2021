@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 const NoteForm = ({ createNote }) => {
 
-
     const [newNote, setNewNote] = useState('')
     const handleChange = (event) => {
         setNewNote(event.target.value)
@@ -12,6 +11,7 @@ const NoteForm = ({ createNote }) => {
         event.preventDefault()
         createNote({
             content: newNote,
+            date: new Date().toISOString(),
             important: Math.random() > 0.5,
         })
 
