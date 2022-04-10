@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react'
+import React, { useRef } from 'react'
+
 import Blog from './components/Blog'
+import Togglable from './components/Togglable'
+import Notification from './components/Notification'
+import LoginForm from './components/Form/LoginForm'
+import BlogForm from './components/Form/BlogForm'
+
+//servicw
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
 
 
 const App = () => {
+
+  const noteFormRef = useRef()
+
   const [blogs, setBlogs] = useState([])
 
   const [notificationMessage, setNotificationMessage] = useState(null)
@@ -17,9 +25,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
 
   function showError(msg) {
     setNotificationMessage(msg)
@@ -38,25 +43,7 @@ const App = () => {
     setBlogs(blogs)
   }
 
-  const createBlog = async (event) => {
-    event.preventDefault()
 
-    try {
-      const blog = await blogService.createNew(title, author, url)
-      // console.log('blog',blog)
-      showSucess(`A new blog "${blog.title}" by "${blog.author}" added`)
-      updateBlog()
-    } catch (error) {
-
-      let msg = 'ERROR'
-
-      if (error.response) { msg = error.response.data.error }
-      else if (error.request) { msg = error.request.statusMessage }
-      else if (error.message) { msg = error.message }
-
-      showError(msg)
-    }
-  }
 
   const handleLogout = async (event) => {
     event.preventDefault()
@@ -97,10 +84,37 @@ const App = () => {
     //  blogService.getAll()   .then(blogs => setBlogs(blogs)   )
   }, [])
 
+
+  ///////////////////////////////////////////////////////////////////////
+  async function createBlog(title, author, url) {
+
+    noteFormRef.current.toggleVisibility()
+
+    try {
+      const blog = await blogService.createNew(title, author, url)
+      // console.log('blog',blog)
+      showSucess(`A new blog "${blog.title}" by "${blog.author}" added`)
+      updateBlog()
+    } catch (error) {
+
+      let msg = 'ERROR'
+
+      if (error.response) { msg = error.response.data.error }
+      else if (error.request) { msg = error.request.statusMessage }
+      else if (error.message) { msg = error.message }
+
+      showError(msg)
+    }
+  }
+
+
+  //////////////////////////////////////////////////////////////////////
   return (
 
 
     <div>
+      <h1>Blogs</h1>
+
       <Notification message={notificationMessage} type={notificationType} />
 
       {user === null
@@ -116,16 +130,9 @@ const App = () => {
           <h1>Welcome {user.name}<button type="button" onClick={handleLogout}>logout</button></h1>
 
 
-          <h2>Create New Blog</h2>
-          <BlogForm
-            handleCreate={createBlog}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-          />
+          <Togglable buttonLabel="new blog" ref={noteFormRef}>
+            <BlogForm createBlog={createBlog} />
+          </Togglable>
 
 
           <h2>Blogs</h2>

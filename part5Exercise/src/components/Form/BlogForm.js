@@ -1,10 +1,22 @@
+import React, { useState } from 'react'
 
 
+const BlogForm = ({ createBlog }) => {
 
-const BlogForm = ({ handleCreate, title, setTitle, author, setAuthor, url, setUrl }) => {
+    const [title, setTitle] = useState("")
+    const [author, setAuthor] = useState("")
+    const [url, setUrl] = useState("")
+
+    const addBlog = async (event) => {
+        event.preventDefault()
+        await createBlog(title, author, url)
+    }
 
     return (<>
-        <form onSubmit={handleCreate}>
+
+        <h2>Create New Blog</h2>
+
+        <form onSubmit={addBlog}>
             <div>
                 <label>Title</label>
                 <input
@@ -41,3 +53,4 @@ const BlogForm = ({ handleCreate, title, setTitle, author, setAuthor, url, setUr
 }
 
 export default BlogForm
+
