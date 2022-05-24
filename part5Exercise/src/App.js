@@ -40,7 +40,9 @@ const App = () => {
 
   async function updateBlog() {
     const blogs = await blogService.getAll();
-    setBlogs(blogs)
+    const sortedBlogs = blogs.sort((c1, c2) => (c1.likes < c2.likes) ? 1 : (c1.likes > c2.likes) ? -1 : 0);
+    // output:
+    setBlogs(sortedBlogs)
   }
 
 
@@ -107,6 +109,23 @@ const App = () => {
     }
   }
 
+  async function incrementLikeInBlog(actualBlog) {
+    try {
+      const blog = await blogService.addLike(actualBlog)
+      showSucess(`Update blog "${blog.title}" with like "${blog.likes}"`)
+      updateBlog()
+    } catch (error) {
+
+      let msg = 'ERROR'
+
+
+      if (error.response) { msg = error.response.data.error }
+      else if (error.request) { msg = error.request.statusMessage }
+      else if (error.message) { msg = error.message }
+
+      showError(msg)
+    }
+  }
 
   //////////////////////////////////////////////////////////////////////
   return (
@@ -137,7 +156,7 @@ const App = () => {
 
           <h2>Blogs</h2>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} handleAddLike={incrementLikeInBlog} />
           )}
 
         </div>

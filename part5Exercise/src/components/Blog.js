@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
-import React, { useRef } from 'react'
+import { useState } from 'react'
+import React from 'react'
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleAddLike }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -15,11 +15,10 @@ const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
   const toggleVisibility = () => { setVisible(!visible) }
 
-
   const detailsOn = <div style={blogStyle}>
     {blog.title} <button onClick={toggleVisibility}>hide</button>
     <p>{blog.url}</p>
-    <p>like {blog.likes} <button>Like</button> </p>
+    <p>like {blog.likes} <button onClick={() => handleAddLike(blog)}>Like</button> </p>
     <p>{blog.author}</p>
   </div>
 
