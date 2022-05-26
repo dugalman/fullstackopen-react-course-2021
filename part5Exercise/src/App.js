@@ -45,8 +45,6 @@ const App = () => {
     setBlogs(sortedBlogs)
   }
 
-
-
   const handleLogout = async (event) => {
     event.preventDefault()
     loginService.sessionDestroy()
@@ -109,6 +107,7 @@ const App = () => {
     }
   }
 
+  //////////////////////////////////////////////////////////////////////
   async function incrementLikeInBlog(actualBlog) {
     try {
       const blog = await blogService.addLike(actualBlog)
@@ -117,8 +116,6 @@ const App = () => {
     } catch (error) {
 
       let msg = 'ERROR'
-
-
       if (error.response) { msg = error.response.data.error }
       else if (error.request) { msg = error.request.statusMessage }
       else if (error.message) { msg = error.message }
@@ -126,6 +123,25 @@ const App = () => {
       showError(msg)
     }
   }
+
+  async function deleteBlog(blog) {
+    if (window.confirm(`Remove blog : ${blog.title} by ${blog.author}`)) {
+      try {
+        await blogService.removeBlog(blog)
+        showSucess(`Delete blog "${blog.title}" with like "${blog.likes}"`)
+        updateBlog()
+      } catch (error) {
+  
+        let msg = 'ERROR'
+        if (error.response) { msg = error.response.data.error }
+        else if (error.request) { msg = error.request.statusMessage }
+        else if (error.message) { msg = error.message }
+  
+        showError(msg)
+      } 
+    }
+  }
+
 
   //////////////////////////////////////////////////////////////////////
   return (
@@ -148,15 +164,18 @@ const App = () => {
 
           <h1>Welcome {user.name}<button type="button" onClick={handleLogout}>logout</button></h1>
 
-
           <Togglable buttonLabel="new blog" ref={noteFormRef}>
             <BlogForm createBlog={createBlog} />
           </Togglable>
 
-
           <h2>Blogs</h2>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} handleAddLike={incrementLikeInBlog} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleAddLike={incrementLikeInBlog}
+              handleDeletePost={deleteBlog}
+            />
           )}
 
         </div>
