@@ -63,7 +63,7 @@ test('Show URL and Likes, when click view buttom', () => {
   const button = component.getByText('view')
   fireEvent.click(button)
 
-  component.debug()
+  // component.debug()
   expect(component.container.querySelector('.likes')).toHaveTextContent(blog.likes)
   expect(component.container.querySelector('.url')).toHaveTextContent(blog.url)
 })

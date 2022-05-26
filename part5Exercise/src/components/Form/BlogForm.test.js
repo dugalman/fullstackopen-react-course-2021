@@ -34,7 +34,7 @@ test('renders content', () => {
   fireEvent.change(inputUrl, { target: { value: newBlog.url } })
   fireEvent.change(inputAuthor, { target: { value: newBlog.author } })
 
-  component.debug()
+  // component.debug()
   fireEvent.submit(form)
 
   // console.log(mockCreateBlog.mock.calls[0][0])
