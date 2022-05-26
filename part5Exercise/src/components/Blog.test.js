@@ -67,3 +67,28 @@ test('Show URL and Likes, when click view buttom', () => {
   expect(component.container.querySelector('.likes')).toHaveTextContent(blog.likes)
   expect(component.container.querySelector('.url')).toHaveTextContent(blog.url)
 })
+
+test('check call two times the controller likes', () => {
+
+  const mockDelete = jest.fn()
+  const mockAddLike = jest.fn()
+
+  const component = render(
+    <Blog
+      key={blog.id}
+      blog={blog}
+      handleAddLike={mockAddLike}
+      handleDeletePost={mockDelete}
+    />
+  )
+
+
+  const buttonView = component.getByText('view')
+  fireEvent.click(buttonView)
+
+  const buttonLike = component.container.querySelector('p.likes > button')
+  fireEvent.click(buttonLike)
+  fireEvent.click(buttonLike)
+
+  expect(mockAddLike.mock.calls).toHaveLength(2)
+})
