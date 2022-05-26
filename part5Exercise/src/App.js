@@ -39,8 +39,8 @@ const App = () => {
   }
 
   async function updateBlog() {
-    const blogs = await blogService.getAll();
-    const sortedBlogs = blogs.sort((c1, c2) => (c1.likes < c2.likes) ? 1 : (c1.likes > c2.likes) ? -1 : 0);
+    const blogs = await blogService.getAll()
+    const sortedBlogs = blogs.sort((c1, c2) => (c1.likes < c2.likes) ? 1 : (c1.likes > c2.likes) ? -1 : 0)
     // output:
     setBlogs(sortedBlogs)
   }
@@ -48,7 +48,7 @@ const App = () => {
   const handleLogout = async (event) => {
     event.preventDefault()
     loginService.sessionDestroy()
-    window.location.reload();
+    window.location.reload()
     showSucess('Bye bye')
   }
 
@@ -131,14 +131,14 @@ const App = () => {
         showSucess(`Delete blog "${blog.title}" with like "${blog.likes}"`)
         updateBlog()
       } catch (error) {
-  
+
         let msg = 'ERROR'
         if (error.response) { msg = error.response.data.error }
         else if (error.request) { msg = error.request.statusMessage }
         else if (error.message) { msg = error.message }
-  
+
         showError(msg)
-      } 
+      }
     }
   }
 

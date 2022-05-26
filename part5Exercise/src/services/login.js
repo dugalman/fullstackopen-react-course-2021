@@ -10,7 +10,7 @@ const sessionDestroy = () => {
   window.localStorage.removeItem('loggedNoteappUser')
 }
 
-const sessionPut = (user) =>{
+const sessionPut = (user) => {
   window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
 }
 
@@ -19,10 +19,8 @@ const sessionGet = () => {
   return session
 }
 
-
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { 
-  login ,
+export default {
+  login,
   sessionGet,
   sessionPut,
   sessionDestroy
