@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs/
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVrYWkiLCJpZCI6IjYyOGNkZjJmNTUyYWFiMmI0ZGI3MWZjNiIsImlhdCI6MTY1MzU3MTQ0NH0.Qnt4htH1BA3AhnUAl9SZNBtENZVPngalKCnuN0I1XHM
+
+{
+    "title": "Mi primer blog",
+    "author": "mluukai Salainen",
+    "url": "https://mi-primmer-blog.com/",
+    "likes": 50
+}
