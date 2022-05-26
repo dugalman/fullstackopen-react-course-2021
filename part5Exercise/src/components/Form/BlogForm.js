@@ -15,10 +15,11 @@ const BlogForm = ({ createBlog }) => {
 
     <h2>Create New Blog</h2>
 
-    <form onSubmit={addBlog}>
+    <form id="new-blog" onSubmit={addBlog}>
       <div>
         <label>Title</label>
         <input
+          id="new-blog-title"
           type="text"
           value={title}
           name="title"
@@ -29,6 +30,7 @@ const BlogForm = ({ createBlog }) => {
       <div>
         <label>Author</label>
         <input
+          id="new-blog-author"
           type="text"
           value={author}
           name="author"
@@ -39,6 +41,7 @@ const BlogForm = ({ createBlog }) => {
       <div>
         <label>Url</label>
         <input
+          id="new-blog-url"
           type="url"
           value={url}
           name="url"
