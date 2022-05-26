@@ -17,14 +17,15 @@ const Blog = ({ blog, handleAddLike, handleDeletePost }) => {
 
   const detailsOn = <div style={blogStyle}>
     {blog.title} <button onClick={toggleVisibility}>hide</button>
-    <p>{blog.url}</p>
-    <p>like {blog.likes} <button onClick={() => handleAddLike(blog)}>Like</button> </p>
-    <p>{blog.author}</p>
+    <p className='url'>{blog.url}</p>
+    <p className='likes'>like {blog.likes} <button onClick={() => handleAddLike(blog)}>Like</button> </p>
+    <p className='author'>{blog.author}</p>
     <p><button onClick={() => handleDeletePost(blog)}>DELETE</button> </p>
   </div>
 
   const detailsOff = <div style={blogStyle}>
-    {blog.title} {blog.author}
+    <h2 className='title'>{blog.title}</h2>
+    <h3 className='author'>{blog.author}</h3>
     <button onClick={toggleVisibility}>view</button>
   </div>
 
