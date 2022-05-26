@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
 const blog = {
@@ -26,7 +26,7 @@ test('renders content', () => {
     />
   )
 
-  component.debug()
+  // component.debug()
 
   expect(component.container).toHaveTextContent('BLOG DE PRUEBA')
   expect(component.container).toHaveTextContent('AUTOR DE PRUEBA')
@@ -45,4 +45,25 @@ test('renders content', () => {
   expect(divLikes).toBeNull() // it doesn't exist
 
 
+})
+
+test('Show URL and Likes, when click view buttom', () => {
+  const mockDelete = jest.fn()
+  const mockAddLike = jest.fn()
+
+  const component = render(
+    <Blog
+      key={blog.id}
+      blog={blog}
+      handleAddLike={mockAddLike}
+      handleDeletePost={mockDelete}
+    />
+  )
+
+  const button = component.getByText('view')
+  fireEvent.click(button)
+
+  component.debug()
+  expect(component.container.querySelector('.likes')).toHaveTextContent(blog.likes)
+  expect(component.container.querySelector('.url')).toHaveTextContent(blog.url)
 })
